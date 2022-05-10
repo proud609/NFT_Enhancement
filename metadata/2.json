@@ -1,0 +1,12 @@
+{
+  "name": "Weapon",
+  "description": "A weapon you can upgrade.",
+  "image": "ipfs://bafybeibs6jpvroe2o4magc3pceunhrgpvetmadbj2w7gvjcxcde3xn4i74/images/2.png",
+  "attributes": [
+    {
+      "trait_type": "Weapon level",
+      "value": 2,
+      "max_value": 10
+    }
+  ]
+}
