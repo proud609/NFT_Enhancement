@@ -134,19 +134,12 @@ contract Enhancement is ERC721Enumerable, PullPayment, Ownable {
     }
 
     // Get random number
-    function getRandomNumber(uint256 seed)
-        internal
-        pure
-        returns (bool success)
-    {
+    function getRandomNumber() internal view returns (uint256) {
         // todo: need genrate random number more secure
-        if (seed % 2 == 1) {
-            return true;
-        } else {
-            return false;
-        }
+        return block.timestamp;
     }
 
+    // check the ownership of specific tokenId
     function checkOwnership(uint256 tokenId) internal view returns (bool own) {
         uint256 ownerTokenCount = balanceOf(msg.sender);
         require(ownerTokenCount > 0, "You don't have any token!");
@@ -162,7 +155,7 @@ contract Enhancement is ERC721Enumerable, PullPayment, Ownable {
     // Upgrade weapon
     function upgrade(uint256 tokenId) public {
         require(checkOwnership(tokenId), "This is not your token!");
-        if (getRandomNumber(block.timestamp)) {
+        if (getRandomNumber() % 2 == 0) {
             tokenIdToLevel[tokenId]++;
         } else {
             tokenIdToLevel[tokenId] = 0;
@@ -170,6 +163,7 @@ contract Enhancement is ERC721Enumerable, PullPayment, Ownable {
     }
 
     // cheating function haha
+    // should be taken when deploy to production
     function cheat(uint256 tokenId) public onlyOwner {
         tokenIdToLevel[tokenId]++;
     }
