@@ -51,7 +51,7 @@ contract Enhancement is ERC721Enumerable, PullPayment, Ownable {
 
         for (uint256 i = 1; i <= _mintAmount; i++) {
             _safeMint(msg.sender, supply + i);
-            tokenIdToLevel[supply + i] = 1;
+            tokenIdToLevel[supply + i] = 0;
         }
     }
 
