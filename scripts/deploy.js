@@ -14,7 +14,7 @@ task("deploy", "Deploys the NFT.sol contract")
 	.addParam("baseUri", "The baseUri of the contract", "https://bafybeia5osgiwxx6ywvxh45o3rtxcce4k3l2vd7yk3vi73kcm5zxihplxe.ipfs.nftstorage.link/metadata/")
 	.addParam("staticUri", "The staticUri of the contract", "https://bafybeia5osgiwxx6ywvxh45o3rtxcce4k3l2vd7yk3vi73kcm5zxihplxe.ipfs.nftstorage.link/metadata/0.json")
 	.setAction(async function (taskArguments, hre) {
-		const nftContractFactory = await hre.ethers.getContractFactory("Reinforce", getAccount());
-		const nft = await nftContractFactory.deploy(taskArguments.name, taskArguments.symbol, taskArguments.baseUri, taskArguments.oldUri);
+		const nftContractFactory = await hre.ethers.getContractFactory("Enhancement", getAccount());
+		const nft = await nftContractFactory.deploy(taskArguments.name, taskArguments.symbol, taskArguments.price, taskArguments.baseUri, taskArguments.staticUri);
 		console.log(`Contract deployed to address: ${nft.address}`);
 	});
