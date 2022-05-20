@@ -24,7 +24,6 @@ task("withdraw", "withdraw payments from the NFT contract")
 	});
 
 task("mint", "Mints from the NFT contract")
-	.addParam("mintAmount", "The amount to mint")
 	.setAction(async function (taskArguments, hre) {
 		const contract = await getContract("Enhancement", hre);
 		const transactionResponse = await contract.mint(taskArguments.mintAmount, {
