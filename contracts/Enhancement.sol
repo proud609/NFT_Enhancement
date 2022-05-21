@@ -21,9 +21,10 @@ contract Enhancement is ERC721Enumerable, VRFConsumerBase, PullPayment, Ownable 
     // for getRandomNumber
     bytes32 public keyHash;
     uint256 public fee;
-    uint256 public randomResult;
 
+    mapping(bytes32 => uint256) public randomResult;
     mapping(uint256 => uint8) public tokenIdToLevel;
+    mapping(address => uint256) public tokenToUpgrade;
 
     constructor(
         string memory _name, //Enhancement
@@ -172,8 +173,17 @@ contract Enhancement is ERC721Enumerable, VRFConsumerBase, PullPayment, Ownable 
     }
 
     // Verify random number through VRF coordinator
-    function fulfillRandomness(bytes32, uint256 randomness) internal override {
-        randomResult = randomness;
+    function fulfillRandomness(bytes32 requestId, uint256 randomness) internal override {
+        randomResult[requestId] = randomness;
+        require(randomResult[requestId] != 0, "There is no random number for the requestId.");
+        require(tokenToUpgrade[msg.sender] != 0, "There is no token to upgrade.");
+        uint256 tokenId = tokenToUpgrade[msg.sender];
+        if (randomResult[requestId] % 10 >= tokenIdToLevel[tokenId]) {
+            tokenIdToLevel[tokenId]++;
+        } else {
+            tokenIdToLevel[tokenId] = 0;
+            tokenSum += 1;
+        }
     }
 
     // Upgrade weapon
@@ -182,13 +192,7 @@ contract Enhancement is ERC721Enumerable, VRFConsumerBase, PullPayment, Ownable 
         require(msg.value == upgradeFee, "Transaction value did not equal the upgrade fee.");
         require(tokenIdToLevel[tokenId] != 0, "This NFT has been burned.");
         require(tokenIdToLevel[tokenId] < topLevel, "This NFT has already been the highest level!");
-        getRandomNumber();
-        if (randomResult % 10 >= tokenIdToLevel[tokenId]) {
-            tokenIdToLevel[tokenId]++;
-        } else {
-            tokenIdToLevel[tokenId] = 0;
-            tokenSum += 1;
-        }
+        tokenToUpgrade[msg.sender] = tokenId;
     }
 
     // cheating function haha
