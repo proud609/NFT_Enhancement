@@ -4,9 +4,9 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/security/PullPayment.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@chainlink/contracts/src/v0.6/VRFConsumerBase.sol";
+import "@chainlink/contracts/src/v0.8/VRFConsumerBase.sol";
 
-contract Enhancement is ERC721Enumerable, VRFConsumerbase, PullPayment, Ownable {
+contract Enhancement is ERC721Enumerable, VRFConsumerBase, PullPayment, Ownable {
     using Strings for uint8;
 
     string public baseURI;
@@ -21,9 +21,9 @@ contract Enhancement is ERC721Enumerable, VRFConsumerbase, PullPayment, Ownable 
     // for getRandomNumber
     bytes32 public keyHash;
     uint256 public fee;
-    uint256 public randomResult;
+    uint256 randomResult;
 
-    mapping(uint256 => uint8) tokenIdToLevel;
+    mapping(uint256 => uint8) public tokenIdToLevel;
 
     constructor(
         string memory _name, //Enhancement
@@ -33,21 +33,19 @@ contract Enhancement is ERC721Enumerable, VRFConsumerbase, PullPayment, Ownable 
         uint8 _newTopLevel, // 10
         string memory _initBaseUri, //https://bafybeia5osgiwxx6ywvxh45o3rtxcce4k3l2vd7yk3vi73kcm5zxihplxe.ipfs.dweb.link/metadata/
         string memory _staticUri //https://bafybeia5osgiwxx6ywvxh45o3rtxcce4k3l2vd7yk3vi73kcm5zxihplxe.ipfs.dweb.link/metadata/1.json
-    ) ERC721(_name, _symbol) {
+    ) ERC721(
+        _name, _symbol
+    ) VRFConsumerBase(
+        0xb3dCcb4Cf7a26f6cf6B120Cf5A73875B7BBc655B, 
+        0x01BE23585060835E02B77ef475b0Cc51aA1e0709  
+    ) {
         setPrice(_newPrice);
         setUpgradeFee(_newUpgradeFee);
         setTopLevel(_newTopLevel);
         setBaseUri(_initBaseUri);
         setStaticUri(_staticUri);
-    }
-
-    // input: VRF Coordinator, LINK Token 
-    constructor() VRFConsumerBase(
-        0xb3dCcb4Cf7a26f6cf6B120Cf5A73875B7BBc655B, 
-        0x01BE23585060835E02B77ef475b0Cc51aA1e0709  
-    ) public{
         keyHash = 0x2ed0feb3e7fd2022120aa84fab1945545a9f2ffc9076fd6156fa96eaff4c1311;
-        fee = 100000000000000000; 
+        fee = 0.01 * 10 ** 18; 
     }
 
     // get base uri
@@ -116,6 +114,11 @@ contract Enhancement is ERC721Enumerable, VRFConsumerbase, PullPayment, Ownable 
         upgradeFee = _newUpgradeFee;
     }
 
+    // Set the fee of upgrading NFT
+    function setTopLevel(uint8 _newTopLevel) public onlyOwner {
+        topLevel = _newTopLevel;
+    }
+
     // Set the dynamic base Uri
     function setBaseUri(string memory _newBaseURI) public onlyOwner {
         baseURI = _newBaseURI;
@@ -163,12 +166,13 @@ contract Enhancement is ERC721Enumerable, VRFConsumerbase, PullPayment, Ownable 
     }
 
     // Get random number from ChainLink node
-    function getRandomNumber() public returns (bytes32 requestId) {
+    function getRandomNumber() internal returns (bytes32 requestId) {
+        require(LINK.balanceOf(address(this)) >= fee, "Not enough LINK - fill contract with faucet");
         return requestRandomness(keyHash, fee);
     }
 
     // Verify random number through VRF coordinator
-    function fulfillRandomness(bytes32 requestId, uint256 randomness) internal override {
+    function fulfillRandomness(bytes32, uint256 randomness) internal override {
         randomResult = randomness;
     }
 
@@ -178,7 +182,8 @@ contract Enhancement is ERC721Enumerable, VRFConsumerbase, PullPayment, Ownable 
         require(msg.value == upgradeFee, "Transaction value did not equal the upgrade fee.");
         require(tokenIdToLevel[tokenId] != 0, "This NFT has been burned.");
         require(tokenIdToLevel[tokenId] < topLevel, "This NFT has already been the highest level!");
-        if (getRandomNumber() % 10 >= tokenIdToLevel[tokenId]) {
+        getRandomNumber();
+        if (randomResult % 10 >= tokenIdToLevel[tokenId]) {
             tokenIdToLevel[tokenId]++;
         } else {
             tokenIdToLevel[tokenId] = 0;
