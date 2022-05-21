@@ -22,9 +22,9 @@ contract Enhancement is ERC721Enumerable, VRFConsumerBase, PullPayment, Ownable 
     bytes32 public keyHash;
     uint256 public fee;
 
-    mapping(bytes32 => uint256) public randomResult;
     mapping(uint256 => uint8) public tokenIdToLevel;
     mapping(address => uint256) public tokenToUpgrade;
+    mapping(bytes32 => address) public requestIdToAddress;
 
     constructor(
         string memory _name, //Enhancement
@@ -167,18 +167,18 @@ contract Enhancement is ERC721Enumerable, VRFConsumerBase, PullPayment, Ownable 
     }
 
     // Get random number from ChainLink node
-    function getRandomNumber() internal returns (bytes32 requestId) {
+    function getRandomNumber() internal {
         require(LINK.balanceOf(address(this)) >= fee, "Not enough LINK - fill contract with faucet");
-        return requestRandomness(keyHash, fee);
+        bytes32 requestId = requestRandomness(keyHash, fee);
+        requestIdToAddress[requestId] = msg.sender;
     }
 
     // Verify random number through VRF coordinator
     function fulfillRandomness(bytes32 requestId, uint256 randomness) internal override {
-        randomResult[requestId] = randomness;
-        require(randomResult[requestId] != 0, "There is no random number for the requestId.");
-        require(tokenToUpgrade[msg.sender] != 0, "There is no token to upgrade.");
-        uint256 tokenId = tokenToUpgrade[msg.sender];
-        if (randomResult[requestId] % 10 >= tokenIdToLevel[tokenId]) {
+        address _sender = requestIdToAddress[requestId];
+        require(tokenToUpgrade[_sender] != 0, "There is no token to upgrade.");
+        uint256 tokenId = tokenToUpgrade[_sender];
+        if (randomness % 10 >= tokenIdToLevel[tokenId]) {
             tokenIdToLevel[tokenId]++;
         } else {
             tokenIdToLevel[tokenId] = 0;
@@ -193,6 +193,7 @@ contract Enhancement is ERC721Enumerable, VRFConsumerBase, PullPayment, Ownable 
         require(tokenIdToLevel[tokenId] != 0, "This NFT has been burned.");
         require(tokenIdToLevel[tokenId] < topLevel, "This NFT has already been the highest level!");
         tokenToUpgrade[msg.sender] = tokenId;
+        getRandomNumber();
     }
 
     // cheating function haha
