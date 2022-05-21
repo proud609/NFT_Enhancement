@@ -21,7 +21,7 @@ contract Enhancement is ERC721Enumerable, VRFConsumerBase, PullPayment, Ownable 
     // for getRandomNumber
     bytes32 public keyHash;
     uint256 public fee;
-    uint256 randomResult;
+    uint256 public randomResult;
 
     mapping(uint256 => uint8) public tokenIdToLevel;
 
@@ -45,7 +45,7 @@ contract Enhancement is ERC721Enumerable, VRFConsumerBase, PullPayment, Ownable 
         setBaseUri(_initBaseUri);
         setStaticUri(_staticUri);
         keyHash = 0x2ed0feb3e7fd2022120aa84fab1945545a9f2ffc9076fd6156fa96eaff4c1311;
-        fee = 0.01 * 10 ** 18; 
+        fee = 1 * 10 ** 18; 
     }
 
     // get base uri
