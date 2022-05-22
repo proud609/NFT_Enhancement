@@ -13,8 +13,8 @@ task("deploy", "Deploys the NFT.sol contract")
 	.addParam("price", "The price of the NFT", "100000000000000")
 	.addParam("upgradeFee", "The fee to upgrade your NFT", "0")
 	.addParam("topLevel", "The highest level", "10")
-	.addParam("baseUri", "The baseUri of the contract", "https://bafybeia5osgiwxx6ywvxh45o3rtxcce4k3l2vd7yk3vi73kcm5zxihplxe.ipfs.nftstorage.link/metadata/")
-	.addParam("staticUri", "The staticUri of the contract", "https://bafybeia5osgiwxx6ywvxh45o3rtxcce4k3l2vd7yk3vi73kcm5zxihplxe.ipfs.nftstorage.link/metadata/0.json")
+	.addParam("baseUri", "The baseUri of the contract", "https://gateway.pinata.cloud/ipfs/QmPqcrgkUEwEXusTz6GECTUAfYpPfz9mAmaQuJeLHvvt3x/")
+	.addParam("staticUri", "The staticUri of the contract", "https://gateway.pinata.cloud/ipfs/QmPqcrgkUEwEXusTz6GECTUAfYpPfz9mAmaQuJeLHvvt3x/0.json")
 	.setAction(async function (taskArguments, hre) {
 		const nftContractFactory = await hre.ethers.getContractFactory("Enhancement", getAccount());
 		const nft = await nftContractFactory.deploy(taskArguments.name, taskArguments.symbol, taskArguments.price, taskArguments.upgradeFee, taskArguments.topLevel, taskArguments.baseUri, taskArguments.staticUri);

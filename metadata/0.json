@@ -1,7 +1,8 @@
 {
   "name": "Weapon",
   "description": "A weapon you can upgrade.",
-  "image": "ipfs://bafybeibs6jpvroe2o4magc3pceunhrgpvetmadbj2w7gvjcxcde3xn4i74/images/0.png",
+  "image": "ipfs://QmNoBMGyLQd7SiCYcA1Knv2fpZGEAQHN3QsAb7HaQpFeb1/0.png",
+  "animation_url":"ipfs://Qma4LEM3L4yxzeMCEXVQrsGzoq5rsdaVXZ5FvhBA4hZYeZ/index.html",
   "attributes": [
     {
       "trait_type": "Weapon level",

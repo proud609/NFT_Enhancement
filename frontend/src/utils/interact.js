@@ -3,7 +3,7 @@ import Web3 from "web3";
 var web3;
 
 const contractABI = require('../contract-abi.json')
-const contractAddress = "0x97F814F3E3D43627EffcA600Cbc62831Cda17cdD";
+const contractAddress = "0xfA71C4F0923311931d13FCe5Fa62A68f003bE874";
 
 export const connectWallet = async () => {
   if (window.ethereum) {
