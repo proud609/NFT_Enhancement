@@ -24,11 +24,20 @@ task("withdraw", "withdraw payments from the NFT contract")
 	});
 
 task("mint", "Mints from the NFT contract")
-	.addParam("mintAmount", "The amount to mint")
 	.setAction(async function (taskArguments, hre) {
 		const contract = await getContract("Enhancement", hre);
-		const transactionResponse = await contract.mint(taskArguments.mintAmount, {
+		const transactionResponse = await contract.mint({
 			// value: ethers.utils.parseEther("0.001"),
+			gasLimit: 500_000,
+		});
+		console.log(`Transaction Hash: ${transactionResponse.hash}`);
+	});
+
+task("upgrade", "Upgrade the NFT")
+	.addParam("tokenId", "ID of the token to upgrade")
+	.setAction(async function (taskArguments, hre) {
+		const contract = await getContract("Enhancement", hre);
+		const transactionResponse = await contract.upgrade(taskArguments.tokenId, {
 			gasLimit: 500_000,
 		});
 		console.log(`Transaction Hash: ${transactionResponse.hash}`);
