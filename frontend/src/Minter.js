@@ -90,7 +90,10 @@ const Minter = (props) => {
       <h1 id="title">🧙‍♂️ Alchemy NFT Minter</h1>
       {imgs.map((e, i) => {
         return <div key={i}>
-          <img src={e.image}></img>
+          <iframe src={e.image} 
+          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+          frameBorder="0" height="100%" sandbox="allow-scripts"
+          width="100%" style={{ "minHeight": "500px" }}></iframe>
           <button onClick={() => { onUpgrade(e.tokenId) }}>
             upgrade
           </button>
