@@ -3,7 +3,7 @@ import Web3 from "web3";
 var web3;
 
 const contractABI = require('../contract-abi.json')
-const contractAddress = "0x97F814F3E3D43627EffcA600Cbc62831Cda17cdD";
+const contractAddress = "0xa023C4Cf219AF98B942dD650ea41Ad760Dd22579";
 
 export const connectWallet = async () => {
   if (window.ethereum) {
@@ -155,10 +155,10 @@ export const getTokens = async (counts) => {
       console.log(tokenId)
       const tokenUri = await window.contract.methods.tokenURI(tokenId).call();
       console.log(tokenUri)
-      let [f, s] = tokenUri.split("https://")[1].split(".ipfs.nftstorage.link")
-      let json = await fetchJson("https://ipfs.io/ipfs/" + f + s);
+      // let [f, s] = tokenUri.split("https://")[1].split(".ipfs.nftstorage.link")
+      let json = await fetchJson(tokenUri);
       let img = {
-        image: json.image.replace("ipfs://", "https://ipfs.io/ipfs/"),
+        image: json.animation_url.replace("ipfs://", "https://opensea.mypinata.cloud/ipfs/"),
         tokenId: tokenId
       };
       imgs.push(img);
