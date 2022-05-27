@@ -44,38 +44,43 @@ const Minter = ({ setData, isOwner, data, fetching, successMessage, errorMessage
     }
     setRefreshing(false)
   }
-
   return (
     <>
       {data.length > 0 ?
-        data.map((e, i) => {
+        data.map((weapon, i) => {
           return (
             <Spin spinning={refreshing} key={i}>
               <ProCard split="vertical" bordered>
                 <ProCard colSpan="33%">
-                  <iframe src={e.animation_url}
+                  <iframe src={weapon.animation_url}
                     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                     frameBorder="0" sandbox="allow-scripts"
                     style={{ "minHeight": "500px", "width": "400px" }}>
                   </iframe>
                 </ProCard>
-                <ProCard title={<Title>{e.name}</Title>} headerBordered>
+                <ProCard title={<Title>{weapon.name}</Title>} headerBordered>
                   <Card type='inner' title="Description">
-                    {e.description}
+                    {weapon.description}
                   </Card>
                   <Card type='inner' title="Token ID">
-                    {e.tokenId}
+                    {weapon.tokenId}
                   </Card>
+                  {weapon.attributes.map((attribute, i) => {
+                    return (
+                      <Card type='inner' title={attribute.trait_type} key={i}>
+                        {attribute.value}
+                      </Card>)
+                  })}
                   <br />
                   <Row>
                     <Col span={4} >
-                      <Button type="primary" size="large" shape="round" onClick={() => onUpgrade(e.tokenId)}>upgarde</Button>
+                      <Button type="primary" size="large" shape="round" onClick={() => onUpgrade(weapon.tokenId)}>upgrade</Button>
                     </Col>
                     <Col span={4} >
-                      <Button type="primary" size="large" shape="round" onClick={() => onRefresh(e.tokenId, i)}>refresh</Button>
+                      <Button type="primary" size="large" shape="round" onClick={() => onRefresh(weapon.tokenId, i)}>refresh</Button>
                     </Col>
                     <Col span={4} >
-                      <Button type="primary" size="large" shape="round" onClick={() => onCheat(e.tokenId)} disabled={!isOwner}>cheat</Button>
+                      <Button type="primary" size="large" shape="round" onClick={() => onCheat(weapon.tokenId)} disabled={!isOwner}>cheat</Button>
                     </Col>
                   </Row>
                 </ProCard>
@@ -108,77 +113,3 @@ const Minter = ({ setData, isOwner, data, fetching, successMessage, errorMessage
 };
 
 export default Minter;
-
-// import { useEffect, useState } from "react";
-// import { connectWallet, getCurrentWalletConnected, mintNFT, getTokensCount, getTokens, upgrade, cheat } from "../utils/interact.js";
-
-// const Minter = (props) => {
-
-//   //State variables
-//   const [imgs, setImgs] = useState([]);
-
-//   const fetchMetedata = async () => {
-//     const { counts } = await getTokensCount();
-//     setCounts(counts);
-//     const { imgs, status } = await getTokens(counts);
-//     console.log(imgs);
-//     setImgs(imgs);
-//     setStatus(status);
-//   }
-
-//   const onMintPressed = async () => {
-//     const { status } = await mintNFT();
-//     setStatus(status);
-//   };
-
-//   const onUpgrade = async (tokenId) => {
-//     const { status } = await upgrade(tokenId);
-//     setStatus(status);
-//   }
-
-//   const onCheat = async (tokenId) => {
-//     const { status } = await cheat(tokenId);
-//     setStatus(status);
-//   }
-
-//   return (
-//     <div className="Minter">
-//       <button id="walletButton" onClick={connectWalletPressed}>
-//         {walletAddress.length > 0 ? (
-//           "Connected: " +
-//           String(walletAddress)
-//         ) : (
-//           <span>Connect Wallet</span>
-//         )}
-//       </button>
-//       <p>Tokens Count:{counts}</p>
-//       <br></br>
-//       <h1 id="title">🧙‍♂️ Alchemy NFT Minter</h1>
-//       {imgs.map((e, i) => {
-//         return <div key={i}>
-//           <iframe src={e.image} 
-//           allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-//           frameBorder="0" height="100%" sandbox="allow-scripts"
-//           width="100%" style={{ "minHeight": "250px" }}></iframe>
-//           <button onClick={() => { onUpgrade(e.tokenId) }}>
-//             upgrade
-//           </button>
-//           <button onClick={() => { onCheat(e.tokenId) }}>
-//             cheat
-//           </button>
-//         </div>
-//       })}
-//       <button id="mintButton" onClick={onMintPressed}>
-//         Mint NFT
-//       </button>
-//       <button id="mintButton" onClick={fetchMetedata}>
-//         Fetch Data
-//       </button>
-//       <p id="status">
-//         {status}
-//       </p>
-//     </div>
-//   );
-// };
-
-// export default Minter;

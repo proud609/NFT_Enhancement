@@ -1,10 +1,11 @@
 import 'antd/dist/antd.css';
-import './App.css';
 import { useEffect, useState, React } from 'react';
-import { Layout, Button, message, Typography, Row, Col } from 'antd';
-import { WalletOutlined } from '@ant-design/icons';
+import { Layout, Button, message, Typography, Row, Col, Affix } from 'antd';
+import { WalletOutlined, FireFilled } from '@ant-design/icons';
 import { getTokens, connectWallet, getCurrentWalletConnected, getTokensCount, mintNFT } from './utils/interact';
 import Minter from './Components/Minter';
+import logo from './logo.png';
+
 
 const { Header, Footer, Content } = Layout;
 const { Text } = Typography;
@@ -108,22 +109,19 @@ function App() {
     init();
   }, []);
 
+
   return (
     <>
       <Layout style={{ minHeight: '100vh' }}>
-        <Header style={{ position: 'fixed', zIndex: 1, width: '100%', height: "10vh" }} >
+        <Header style={{ position: 'fixed', zIndex: 1, width: '100%', height: "10vh", backgroundColor: "rgb(50,100,255)" }} >
           <Row justify="space-between">
-            <Col span={8} style={{ textAlign: "left" }}>
-              <Text style={{ color: "white" }}>Tokens Count:{counts}</Text>
+            <Col span={8} style={{ textAlign: "center" }}>
+              <div className='logo'>
+                <img src={logo} width="50%" style={{}} alt="logo" />
+              </div>
             </Col>
             <Col span={8} style={{ textAlign: "center" }}>
-              <Button
-                type="primary"
-                onClick={onMintPressed}
-                loading={minting}
-              >
-                Mint
-              </Button>
+              <Text strong style={{ color: "white", fontSize: "24px" }}>Tokens Count:{counts}</Text>
             </Col>
             <Col span={8} style={{ textAlign: "right" }}>
               <Button
@@ -145,7 +143,7 @@ function App() {
           marginTop: 90,
         }}>
           <Minter
-            isOwner={ownerAddress === walletAddress}
+            isOwner={ownerAddress.toLowerCase() === walletAddress.toLowerCase()}
             data={data}
             setData={setData}
             fetching={fetching}
@@ -156,6 +154,20 @@ function App() {
           </Minter>
         </Content>
         <Footer style={{ textAlign: "center" }}>Created by NFT Enhancement System team @2022</Footer>
+        <div style={{ textAlign: "left" }}>
+          <Affix style={{ position: 'fixed', bottom: 10, right: 10 }}>
+            <Button
+              onClick={onMintPressed}
+              loading={minting}
+              block
+              shape='circle'
+              icon={<FireFilled />}
+              style={{width:"150px", height:"150px", fontSize:"40px", backgroundColor:"black", color:"white"}}
+            >
+              Mint
+            </Button>
+          </Affix>
+        </div>
       </Layout>
     </>
   )
