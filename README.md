@@ -1,14 +1,22 @@
 # NFT_Enhancement
 Final project
 
-# TO use template
+## Follow steps to deploy your own EHM
+1. create an .env file which include four keys
+   1. ALCHEMY_KEY=
+   2. ACCOUNT_PRIVATE_KEY=
+   3. NFT_CONTRACT_ADDRESS= // after deploy the contract, you can interact with it
+   4. ETHERSCAN_API_KEY= // for verify on Etherscan
+2. ```npm install```
+3. ```npx hardhat compile```
+4. ```npx hardhat deploy``` // with some parameters in scripts/deploy.js
+5. ```npx hardhat verify <NFT_CONTRACT_ADDRESS>``` //  with some parameters in scripts/deploy.js
+6. ``npx hardhat help`` // to see what can you do to interact with your contract
 
-## navigator
+## Follow steps to start frontend
+1. ```cd frontend && npm install```
+2. Edit contractAddress in frontend/src/utils/interact.js
+3. ```npm start```
+4. Happy minting and upgrading!
 
-    /frontend_template/src/examples/Navbars/DefaultNavbar/index.js 
-    Line 491 -> Login button in navbar (想要加其他的請到src/Navigator.js)
-    Line 554 -> brand 左上角的連結
-## footer
-    /frontend_template/src/examples/Footer/DefaultFooter/index.js 
-    Line 38 -> Minter (想要加其他的請到src/Navigator.js)
-    以下都是copy right 看你要不要加
+>Notice: It cost your contract **one LINK token** when upgrading!
