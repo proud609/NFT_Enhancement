@@ -62,8 +62,8 @@ const Minter = ({ setData, isOwner, data, fetching, successMessage, errorMessage
     <>
       {data.length > 0 ?
         data.map((weapon, i) => {
-          console.log(i)
-          console.log(refreshing[i])
+          // console.log(i)
+          // console.log(refreshing[i])
           return (
             <Spin spinning={refreshing[i]} key={i}>
               <ProCard split="vertical" bordered>
@@ -71,7 +71,7 @@ const Minter = ({ setData, isOwner, data, fetching, successMessage, errorMessage
                   <iframe src={weapon.animation_url}
                     title={weapon.tokenId}
                     allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                    frameBorder="0" sandbox="allow-scripts"
+                    frameBorder="0" 
                     style={{ "minHeight": "500px", "width": "400px" }}>
                   </iframe>
                 </ProCard>

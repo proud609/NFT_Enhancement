@@ -89,8 +89,8 @@ export const mintNFT = async () => {
   const transactionParameters = {
     to: contractAddress, // Required except during contract publications.
     from: window.ethereum.selectedAddress, // must match user's active address.
-    'data': window.contract.methods.mint().encodeABI(), //make call to NFT smart contract 
-    value: "100000000000000"
+    data: window.contract.methods.mint().encodeABI(), //make call to NFT smart contract 
+    value: web3.utils.toHex("100000000000000")
   };
 
   //sign transaction via Metamask
@@ -152,9 +152,9 @@ export const getTokens = async (counts) => {
     // const { baseUri } = await getBaseURI();
     for (let i = 0; i < counts; i++) {
       const tokenId = await window.contract.methods.tokenOfOwnerByIndex(window.ethereum.selectedAddress, i).call();
-      console.log(tokenId);
+      // console.log(tokenId);
       const tokenUri = await window.contract.methods.tokenURI(tokenId).call();
-      console.log(tokenUri);
+      // console.log(tokenUri);
       let json = await fetchJson(tokenUri);
       json.animation_url = json.animation_url.replace("ipfs://", "https://opensea.mypinata.cloud/ipfs/");
       json.tokenId = tokenId;
@@ -181,7 +181,7 @@ export const fetchJson = async (url) => {
 export const refresh = async (tokenId) => {
   try {
     const tokenUri = await window.contract.methods.tokenURI(tokenId).call();
-    console.log(tokenUri);
+    // console.log(tokenUri);
     let json = await fetchJson(tokenUri);
     json.animation_url = json.animation_url.replace("ipfs://", "https://opensea.mypinata.cloud/ipfs/");
     json.tokenId = tokenId;
