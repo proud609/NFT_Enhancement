@@ -47,7 +47,17 @@ task("set-base-token-uri", "Sets the base token URI for the deployed smart contr
 	.addParam("baseUrl", "The base of the tokenURI endpoint to set")
 	.setAction(async function (taskArguments, hre) {
 		const contract = await getContract("Enhancement", hre);
-		const transactionResponse = await contract.setBaseTokenURI(taskArguments.baseUrl, {
+		const transactionResponse = await contract.setBaseUri(taskArguments.baseUrl, {
+			gasLimit: 500_000,
+		});
+		console.log(`Transaction Hash: ${transactionResponse.hash}`);
+	});
+
+task("set-static-uri", "Sets the static URI for the deployed smart contract")
+	.addParam("staticUrl", "The static URI endpoint to set")
+	.setAction(async function (taskArguments, hre) {
+		const contract = await getContract("Enhancement", hre);
+		const transactionResponse = await contract.setStaticUri(taskArguments.staticUrl, {
 			gasLimit: 500_000,
 		});
 		console.log(`Transaction Hash: ${transactionResponse.hash}`);
