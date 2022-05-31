@@ -1,6 +1,6 @@
 {
-  "name": "Weapon",
-  "description": "A weapon you can upgrade.",
+  "name": "Pike with shield",
+  "description": "It's a weapon at level 7. You'll have 30% chance to successfully upgrade it, or it could be burnt to ashes. Dare to try?",
   "image": "ipfs://QmdadoKNUiMPqPXVpgf2GEKghuNJmC38D5XmQggwEbAJyn/7.png",
   "animation_url":"ipfs://QmPSB7g6C66pnC17JbYg7a3QtXJz2uKBKKiRGfcoxhBX84/7/",
   "attributes": [

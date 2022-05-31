@@ -1,6 +1,6 @@
 {
-  "name": "Weapon",
-  "description": "A weapon you can upgrade.",
+  "name": "Bow and arrow with shield",
+  "description": "It's a weapon at level 8. You'll have 20% chance to successfully upgrade it, or it could be burnt to ashes. It's not easy to go all the way to here.",
   "image": "ipfs://QmdadoKNUiMPqPXVpgf2GEKghuNJmC38D5XmQggwEbAJyn/8.png",
   "animation_url":"ipfs://QmPSB7g6C66pnC17JbYg7a3QtXJz2uKBKKiRGfcoxhBX84/8/",
   "attributes": [
